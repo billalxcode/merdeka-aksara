@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "plane": {
+      "type": "remote",
+      "url": "https://mcp.plane.so/http/api-key/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:PLANE_PAT}",
+        "x-workspace-slug": "{env:PLANE_WORKSPACE_SLUG}"
+      }
+    }
+  }
+}
