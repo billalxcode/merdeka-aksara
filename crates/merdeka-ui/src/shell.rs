@@ -121,6 +121,7 @@ where
         &app_name,
         options,
         Box::new(|cc| {
+            egui_extras::install_image_loaders(&cc.egui_ctx);
             let page = creator(cc);
             let app = MerdekaApp::new(config, page);
             app.theme.apply(&cc.egui_ctx);

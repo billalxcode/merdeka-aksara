@@ -6,6 +6,7 @@
 //! cukup depend ke crate ini + implement [`shell::MerdekaPage`].
 
 pub mod components;
+pub mod icons;
 pub mod shell;
 pub mod theme;
 
@@ -16,6 +17,7 @@ pub use theme::MerdekaTheme;
 /// Re-ekspor sekali pakai untuk aplikasi.
 pub mod prelude {
     pub use crate::components::ribbon::Pita;
+    pub use crate::icons::{icon, svg_path};
     pub use crate::shell::{MerdekaApp, MerdekaConfig, MerdekaPage, run_page};
     pub use crate::theme::MerdekaTheme;
 }
