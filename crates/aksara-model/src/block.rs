@@ -2,8 +2,28 @@
 
 use crate::id::NodeId;
 use crate::image::Image;
+use crate::page::PageSetup;
 use crate::table::Table;
 use crate::text::Paragraph;
+
+/// A break that starts a new section with its own page setup.
+///
+/// The `page_setup` describes the section that follows the break,
+/// mirroring how `PageBreak` anchors a page boundary for editing.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct SectionBreak {
+    /// Stable node id of the break marker.
+    pub id: NodeId,
+    /// Page setup of the section following the break.
+    pub page_setup: PageSetup,
+}
+
+impl SectionBreak {
+    /// Create a section break carrying the next section's setup.
+    pub fn new(id: NodeId, page_setup: PageSetup) -> Self {
+        Self { id, page_setup }
+    }
+}
 
 /// One content unit inside a section.
 #[derive(Debug, Clone, PartialEq)]
@@ -16,6 +36,8 @@ pub enum Block {
     Image(Image),
     /// Forced break to the next page.
     PageBreak,
+    /// Break that starts a new section with its own page setup.
+    SectionBreak(SectionBreak),
 }
 
 impl Block {
@@ -27,16 +49,17 @@ impl Block {
             Self::Paragraph(para) => Some(para.id),
             Self::Table(table) => Some(table.id),
             Self::Image(image) => Some(image.id),
+            Self::SectionBreak(section_break) => Some(section_break.id),
             Self::PageBreak => None,
         }
     }
 
-    /// Words in the block. Images and page breaks count zero.
+    /// Words in the block. Images and breaks count zero.
     pub fn word_count(&self) -> usize {
         match self {
             Self::Paragraph(para) => para.word_count(),
             Self::Table(table) => table.word_count(),
-            Self::Image(_) | Self::PageBreak => 0,
+            Self::Image(_) | Self::PageBreak | Self::SectionBreak(_) => 0,
         }
     }
 }

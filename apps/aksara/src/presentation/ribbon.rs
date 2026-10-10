@@ -4,7 +4,7 @@ use crate::application::{AksaraState, PesanKind};
 use crate::domain::gaya::{FONT_OPSI, UKURAN_OPSI};
 use crate::domain::{RataTeks, Rgb};
 use merdeka_ui::{
-    components::{self, Pita, alat_toggle, grup, tool_button, tool_toggle, zoom_slider},
+    components::{self, Pita, grup, tool_button, tool_toggle, zoom_slider},
     icons::{Icon, Outline},
 };
 
@@ -93,12 +93,24 @@ pub fn tampilkan(state: &mut AksaraState, ui: &mut egui::Ui, tab: Pita) {
                 let gaya = &mut state.dokumen.gaya;
                 components::font_picker(ui, &mut gaya.font, FONT_OPSI);
                 components::size_picker(ui, &mut gaya.ukuran, UKURAN_OPSI);
-                alat_toggle(ui, &mut gaya.tebal, "B", "Tebal", "Tebal (Ctrl+B)");
-                alat_toggle(ui, &mut gaya.miring, "I", "Miring", "Miring (Ctrl+I)");
-                alat_toggle(
+                tool_toggle(
+                    ui,
+                    &mut gaya.tebal,
+                    Icon::Outline(Outline::Bold),
+                    "Tebal",
+                    "Tebal (Ctrl+B)",
+                );
+                tool_toggle(
+                    ui,
+                    &mut gaya.miring,
+                    Icon::Outline(Outline::Italic),
+                    "Miring",
+                    "Miring (Ctrl+I)",
+                );
+                tool_toggle(
                     ui,
                     &mut gaya.garis_bawah,
-                    "U",
+                    Icon::Outline(Outline::Underline),
                     "Garis",
                     "Garis bawah (Ctrl+U)",
                 );

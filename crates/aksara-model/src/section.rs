@@ -16,6 +16,10 @@ pub struct Section {
     pub page_setup: PageSetup,
     /// Ordered content blocks.
     pub blocks: Vec<Block>,
+    /// Repeating header blocks, shown on every page of this section.
+    pub header: Vec<Block>,
+    /// Repeating footer blocks, shown on every page of this section.
+    pub footer: Vec<Block>,
 }
 
 impl Section {
@@ -25,6 +29,8 @@ impl Section {
             id,
             page_setup,
             blocks: Vec::new(),
+            header: Vec::new(),
+            footer: Vec::new(),
         }
     }
 
@@ -33,14 +39,65 @@ impl Section {
         self.blocks.push(block);
     }
 
+    /// Insert a block at the given index, shifting later blocks right.
+    ///
+    /// Panics when `index > self.blocks.len()`, like `Vec::insert`.
+    /// Ids of existing blocks are left untouched.
+    pub fn insert_block(&mut self, index: usize, block: Block) {
+        self.blocks.insert(index, block);
+    }
+
+    /// Remove and return the block at the given index.
+    ///
+    /// Panics when `index` is out of bounds, like `Vec::remove`.
+    /// Ids of the remaining blocks are left untouched.
+    pub fn remove_block(&mut self, index: usize) -> Block {
+        self.blocks.remove(index)
+    }
+
     /// Words across all blocks in the section.
+    ///
+    /// Header and footer blocks are excluded: they repeat on every
+    /// page and must not change the body word count.
     pub fn word_count(&self) -> usize {
         self.blocks.iter().map(Block::word_count).sum()
     }
 
-    /// Number of top-level blocks.
+    /// Number of top-level blocks (header/footer excluded).
     pub fn block_count(&self) -> usize {
         self.blocks.len()
+    }
+
+    /// Replace the header blocks.
+    pub fn with_header(mut self, header: Vec<Block>) -> Self {
+        self.header = header;
+        self
+    }
+
+    /// Replace the footer blocks.
+    pub fn with_footer(mut self, footer: Vec<Block>) -> Self {
+        self.footer = footer;
+        self
+    }
+
+    /// Replace the header blocks in place.
+    pub fn set_header(&mut self, header: Vec<Block>) {
+        self.header = header;
+    }
+
+    /// Replace the footer blocks in place.
+    pub fn set_footer(&mut self, footer: Vec<Block>) {
+        self.footer = footer;
+    }
+
+    /// Remove all header blocks.
+    pub fn clear_header(&mut self) {
+        self.header.clear();
+    }
+
+    /// Remove all footer blocks.
+    pub fn clear_footer(&mut self) {
+        self.footer.clear();
     }
 }
 
@@ -69,5 +126,44 @@ mod tests {
         let section = Section::new(NodeId::new(1), PageSetup::a4_portrait());
         assert_eq!(section.word_count(), 0);
         assert_eq!(section.block_count(), 0);
+    }
+
+    fn para_block(id: u64, text: &str) -> Block {
+        let mut para = Paragraph::new(NodeId::new(id));
+        para.push_run(TextRun::new(
+            NodeId::new(id + 1000),
+            text,
+            CharacterStyle::default(),
+        ));
+        Block::Paragraph(para)
+    }
+
+    #[test]
+    fn insert_preserves_ids() {
+        let mut section = Section::new(NodeId::new(1), PageSetup::a4_portrait());
+        section.push_block(para_block(10, "a"));
+        section.push_block(para_block(11, "b"));
+        section.push_block(para_block(12, "c"));
+        let before: Vec<Option<NodeId>> = section.blocks.iter().map(Block::id).collect();
+        section.insert_block(1, para_block(20, "x"));
+        assert_eq!(section.block_count(), 4);
+        assert_eq!(section.blocks[0].id(), before[0]);
+        assert_eq!(section.blocks[1].id(), Some(NodeId::new(20)));
+        assert_eq!(section.blocks[2].id(), before[1]);
+        assert_eq!(section.blocks[3].id(), before[2]);
+    }
+
+    #[test]
+    fn remove_preserves_ids() {
+        let mut section = Section::new(NodeId::new(1), PageSetup::a4_portrait());
+        section.push_block(para_block(10, "a"));
+        section.push_block(para_block(11, "b"));
+        section.push_block(para_block(12, "c"));
+        let before: Vec<Option<NodeId>> = section.blocks.iter().map(Block::id).collect();
+        let removed = section.remove_block(1);
+        assert_eq!(removed.id(), before[1]);
+        assert_eq!(section.block_count(), 2);
+        assert_eq!(section.blocks[0].id(), before[0]);
+        assert_eq!(section.blocks[1].id(), before[2]);
     }
 }

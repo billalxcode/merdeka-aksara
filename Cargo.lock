@@ -151,6 +151,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "aksara-edit"
+version = "0.1.0"
+dependencies = [
+ "aksara-model",
+]
+
+[[package]]
+name = "aksara-layout"
+version = "0.1.0"
+dependencies = [
+ "aksara-model",
+]
+
+[[package]]
 name = "aksara-model"
 version = "0.1.0"
 

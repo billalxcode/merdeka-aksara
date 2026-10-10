@@ -16,14 +16,16 @@ pub mod table;
 pub mod text;
 pub mod units;
 
-pub use block::Block;
+pub use block::{Block, SectionBreak};
 pub use document::Document;
 pub use id::NodeId;
 pub use image::Image;
 pub use metadata::DocumentMetadata;
 pub use page::{Orientation, PageSetup};
 pub use section::Section;
-pub use style::{NORMAL_STYLE, NamedStyle, StyleSheet};
+pub use style::{
+    NORMAL_STYLE, NamedStyle, PartialCharacterStyle, PartialParagraphStyle, StyleSheet,
+};
 pub use table::{MAX_COLS, MAX_ROWS, Table, TableCell, TableRow};
 pub use text::{Alignment, CharacterStyle, Paragraph, ParagraphStyle, TextRun};
 pub use units::{

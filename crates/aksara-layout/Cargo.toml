@@ -1,0 +1,9 @@
+[package]
+name = "aksara-layout"
+version = "0.1.0"
+edition = "2024"
+description = "Layout engine for Merdeka Aksara - geometry only, std plus aksara-model"
+license = "MIT"
+
+[dependencies]
+aksara-model = { path = "../aksara-model" }

@@ -1,6 +1,6 @@
 # Merdeka Aksara Architecture
 
-Status: Phase 1 (document model). This file maps crates, states
+Status: Phase 2 (layout engine). This file maps crates, states
 dependency boundaries, and marks what is done versus later work.
 Details stay in `docs/aksara-technical-specs.md`.
 
@@ -17,7 +17,9 @@ apps/
 crates/
   merdeka-ui     # shared egui foundation (theme, shell, components)
   merdeka-icons  # Tabler icon enum + autoloader (build.rs generated)
-  aksara-model   # Phase 1: pure block-based document model (std only)
+   aksara-model   # Phase 1: pure block-based document model (std only)
+   aksara-layout  # Phase 2: layout geometry (std + aksara-model only)
+   aksara-edit    # Phase 3: selection, command/tx, undo/redo (std + aksara-model only)
 ```
 
 Future crates (names only, not created yet):
@@ -26,7 +28,6 @@ Future crates (names only, not created yet):
 crates/
   aksara-edit      # commands, transactions, undo/redo
   aksara-style     # style resolution (default -> named -> direct)
-  aksara-layout    # shaping, line breaking, block layout, pagination
   aksara-render    # draw layout display lists (screen, PDF)
   aksara-fonts     # font loading and metrics
   aksara-io-docx   # model <-> OOXML translation
@@ -39,7 +40,8 @@ crates/
 ```text
 apps/aksara  -->  merdeka-ui  -->  merdeka-icons
 apps/*       -->  aksara-model   (later phases; NOT wired in Phase 1)
-aksara-edit/layout/render/io  -->  aksara-model  (later phases)
+aksara-edit/render/io  -->  aksara-model  (later phases)
+aksara-layout -->  aksara-model  (std only, no egui)
 aksara-model -->  (nothing: std only)
 ```
 
@@ -74,10 +76,34 @@ Done in Phase 1 (this turn):
 - Unit tests for every module (see plan `.caches/aksara-model-plan.md`
   for the per-module list).
 
+Done in Phase 2 (this turn):
+
+- `aksara-model`: `Section.header`/`footer` (`Vec<Block>`,
+  excluded from `word_count`/`block_count`) with
+  `with_header`/`with_footer`/`set_header`/`set_footer`/
+  `clear_header`/`clear_footer`; old tests untouched.
+- `aksara-layout` (new, std + `aksara-model` only): `FixedMeasurer`
+  stub, greedy line breaking, paragraph layout (height, spacing,
+  alignment, first-line indent), ordered block layout, A4
+  multi-section pagination with per-page display lists, repeating
+  header/footer chrome measured once per section and subtracted
+  from the body budget.
+- Ribbon: B/I/U command buttons now `tool_toggle` icons
+  (`Outline::Bold`/`Italic`/`Underline`); style chips stay text,
+  dialog buttons stay text.
+
+Done in Phase 3 (this turn):
+
+- `aksara-edit` (new, std + `aksara-model` only): `Selection`
+  anchor + cursor with char offsets, `EditCommand` insert/delete
+  with `Transaction` dispatch, `UndoRedoManager` snapshot pairs
+  (cap 100); single-run text paragraphs only.
+
 Explicit non-goals (later phases, do not add here):
 
-- Layout engine: text shaping, line breaking, block layout,
-  pagination, hit-testing, layout cache.
+- Layout remainder: real shaping, font metrics, layout cache,
+  hit-testing, hyphenation, widow/orphan control, full
+  table/image layout (only 0.0-height placeholders now).
 - Rendering: screen drawing, GPU backends, PDF output.
 - File IO: DOCX/OOXML, PDF, EPUB, import/export of any kind.
 - Editing engine: selection, caret, undo/redo, transactions.
