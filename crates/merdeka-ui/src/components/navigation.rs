@@ -1,5 +1,6 @@
 //! Navigasi - bar judul + seksi sidebar.
 
+use crate::icons::{Icon, Outline};
 use crate::theme::MERAH;
 use egui::{RichText, Ui};
 
@@ -16,6 +17,7 @@ pub fn title_bar(ui: &mut Ui, nama_app: &str, versi: &str, cari: &mut String) {
             ui.label(RichText::new(format!("v{versi}")).small().weak());
         });
         ui.separator();
+        ui.add(Icon::Outline(Outline::Search).gambar(14.0));
         crate::components::inputs::search_field(ui, cari);
     });
 }

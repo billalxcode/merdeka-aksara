@@ -1,0 +1,9 @@
+[package]
+name = "merdeka-icons"
+version = "0.1.0"
+edition = "2024"
+description = "Seluruh ikon Tabler untuk aplikasi Merdeka - enum + autoload egui"
+license = "MIT"
+
+[dependencies]
+egui = "0.36"

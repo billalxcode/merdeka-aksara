@@ -1810,12 +1810,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "merdeka-icons"
+version = "0.1.0"
+dependencies = [
+ "egui",
+]
+
+[[package]]
 name = "merdeka-ui"
 version = "0.1.0"
 dependencies = [
  "eframe",
  "egui",
  "egui_extras",
+ "merdeka-icons",
 ]
 
 [[package]]
