@@ -20,6 +20,8 @@ crates/
    aksara-model   # Phase 1: pure block-based document model (std only)
    aksara-layout  # Phase 2: layout geometry (std + aksara-model only)
    aksara-edit    # Phase 3: selection, command/tx, undo/redo (std + aksara-model only)
+   aksara-io      # format-dispatch facade (read/write by Format)
+   aksara-io-docx # Phase 5: model <-> OOXML translation (Docx backend)
 ```
 
 Future crates (names only, not created yet):
@@ -30,7 +32,9 @@ crates/
   aksara-style     # style resolution (default -> named -> direct)
   aksara-render    # draw layout display lists (screen, PDF)
   aksara-fonts     # font loading and metrics
-  aksara-io-docx   # model <-> OOXML translation
+  aksara-io-docx   # model <-> OOXML translation (done, now a real crate)
+  aksara-io-doc    # legacy OLE import (planned)
+  aksara-io-odt    # OpenDocument import/export (planned)
   aksara-io-pdf    # PDF export
   aksara-commands  # user-facing command dispatch
 ```
@@ -41,6 +45,7 @@ crates/
 apps/aksara  -->  merdeka-ui  -->  merdeka-icons
 apps/*       -->  aksara-model   (later phases; NOT wired in Phase 1)
 aksara-edit/render/io  -->  aksara-model  (later phases)
+aksara-io --> aksara-io-docx --> aksara-model  (facade dispatch, Docx only)
 aksara-layout -->  aksara-model  (std only, no egui)
 aksara-model -->  (nothing: std only)
 ```
@@ -60,6 +65,11 @@ Rules:
    systems is explicitly later work, not this phase.
 4. Shared UI stays in `merdeka-ui` (theme tokens, shell, components).
    The model holds no colors, no theme, no widgets.
+
+## File formats
+
+Native-first persistence with DOCX as interop: the JSON snapshot decision, the supported DOCX subset, and the OOXML-to-model mapping live in `docs/file-format.md`, dispatched by the `crates/aksara-io`
+facade and implemented by `crates/aksara-io-docx` (Phase 5 subset).
 
 ## Phase position
 

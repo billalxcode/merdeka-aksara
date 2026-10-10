@@ -1,0 +1,11 @@
+[package]
+name = "aksara-io-docx"
+version = "0.1.0"
+edition = "2024"
+description = "DOCX import and export for Merdeka Aksara - model to OOXML translation"
+license = "MIT"
+
+[dependencies]
+aksara-model = { path = "../aksara-model" }
+quick-xml = "0.42"
+zip = "2"

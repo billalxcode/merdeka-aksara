@@ -1,0 +1,10 @@
+[package]
+name = "aksara-io"
+version = "0.1.0"
+edition = "2024"
+description = "Format-dispatch facade over per-format IO backends"
+license = "MIT"
+
+[dependencies]
+aksara-model = { path = "../aksara-model" }
+aksara-io-docx = { path = "../aksara-io-docx" }
