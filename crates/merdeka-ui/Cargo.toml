@@ -1,0 +1,10 @@
+[package]
+name = "merdeka-ui"
+version = "0.1.0"
+edition = "2024"
+description = "Fondasi UI/UX desktop Merdeka berbasis egui — dipakai semua aplikasi Merdeka"
+license = "MIT"
+
+[dependencies]
+egui = "0.36"
+eframe = { version = "0.36", default-features = true }
