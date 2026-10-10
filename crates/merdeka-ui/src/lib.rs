@@ -1,4 +1,4 @@
-//! Merdeka UI — fondasi UI/UX desktop berbasis egui.
+//! Merdeka UI - fondasi UI/UX desktop berbasis egui (tema terang).
 //!
 //! Sementara di-vendor di `crates/merdeka-ui` (path lokal).
 //! Nanti bisa dipindah ke repo/workspace bersama tanpa ubah API:
@@ -9,11 +9,13 @@ pub mod components;
 pub mod shell;
 pub mod theme;
 
+pub use components::ribbon::Pita;
 pub use shell::{MerdekaApp, MerdekaConfig, MerdekaPage, run_page};
-pub use theme::{MerdekaTheme, ThemeMode};
+pub use theme::MerdekaTheme;
 
 /// Re-ekspor sekali pakai untuk aplikasi.
 pub mod prelude {
+    pub use crate::components::ribbon::Pita;
     pub use crate::shell::{MerdekaApp, MerdekaConfig, MerdekaPage, run_page};
-    pub use crate::theme::{MerdekaTheme, ThemeMode};
+    pub use crate::theme::MerdekaTheme;
 }

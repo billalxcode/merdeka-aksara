@@ -2,7 +2,7 @@
 name = "merdeka-ui"
 version = "0.1.0"
 edition = "2024"
-description = "Fondasi UI/UX desktop Merdeka berbasis egui — dipakai semua aplikasi Merdeka"
+description = "Fondasi UI/UX desktop Merdeka berbasis egui - dipakai semua aplikasi Merdeka"
 license = "MIT"
 
 [dependencies]
