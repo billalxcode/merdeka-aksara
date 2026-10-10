@@ -69,7 +69,13 @@ pub fn alat_button(ui: &mut Ui, ikon: &str, label: &str, tooltip: &str) -> Respo
 }
 
 /// Tombol toggle pita: B/I/U, rata teks, dsb.
-pub fn alat_toggle(ui: &mut Ui, aktif: &mut bool, ikon: &str, label: &str, tooltip: &str) -> Response {
+pub fn alat_toggle(
+    ui: &mut Ui,
+    aktif: &mut bool,
+    ikon: &str,
+    label: &str,
+    tooltip: &str,
+) -> Response {
     ui.toggle_value(aktif, format!("{ikon} {label}"))
         .on_hover_text(tooltip)
 }

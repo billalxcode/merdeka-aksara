@@ -79,7 +79,12 @@ impl<P: MerdekaPage> MerdekaApp<P> {
 impl<P: MerdekaPage> eframe::App for MerdekaApp<P> {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         egui::Panel::top("merdeka_judul").show(ui, |ui| {
-            components::title_bar(ui, &self.config.app_name, &self.config.version, &mut self.cari);
+            components::title_bar(
+                ui,
+                &self.config.app_name,
+                &self.config.version,
+                &mut self.cari,
+            );
         });
 
         egui::Panel::top("merdeka_pita_tab").show(ui, |ui| {

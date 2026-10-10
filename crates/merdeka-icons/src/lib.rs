@@ -85,8 +85,10 @@ mod tests {
 
     #[test]
     fn jumlah_masuk_akal() {
-        assert!(Outline::COUNT > 5000, "outline {}", Outline::COUNT);
-        assert!(Filled::COUNT > 1000, "filled {}", Filled::COUNT);
+        const { assert!(Outline::COUNT > 5000) };
+        const { assert!(Filled::COUNT > 1000) };
+        assert!(Outline::all().count() > 5000);
+        assert!(Filled::all().count() > 1000);
     }
 
     #[test]

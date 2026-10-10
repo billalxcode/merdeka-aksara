@@ -1,9 +1,10 @@
 use merdeka_ui::{
     MerdekaConfig, MerdekaPage, MerdekaTheme,
     components::{
-        self, BannerKind, Konfirmasi, Pita, alat_button, alat_toggle, empty_state, grup, notice,
-        page_paper, ruler_stub,
+        self, BannerKind, Konfirmasi, Pita, alat_toggle, empty_state, grup, notice, page_paper,
+        ruler_stub, tool_button, tool_toggle,
     },
+    icons::{Icon, Outline},
 };
 
 const FONT_OPSI: &[&str] = &["Inter", "Liberation Serif", "Noto Sans", "Ubuntu Mono"];
@@ -21,10 +22,19 @@ enum RataTeks {
 impl RataTeks {
     fn label(self) -> &'static str {
         match self {
-            RataTeks::Kiri => "< Rata Kiri",
-            RataTeks::Tengah => "<> Tengah",
-            RataTeks::Kanan => "> Rata Kanan",
-            RataTeks::Rata => "= Justify",
+            RataTeks::Kiri => "Kiri",
+            RataTeks::Tengah => "Tengah",
+            RataTeks::Kanan => "Kanan",
+            RataTeks::Rata => "Rata",
+        }
+    }
+
+    fn ikon(self) -> Outline {
+        match self {
+            RataTeks::Kiri => Outline::AlignLeft,
+            RataTeks::Tengah => Outline::AlignCenter,
+            RataTeks::Kanan => Outline::AlignRight,
+            RataTeks::Rata => Outline::AlignJustified,
         }
     }
 }
@@ -91,15 +101,34 @@ impl MerdekaPage for AksaraPage {
         match tab {
             Pita::Berkas => {
                 grup(ui, "Dokumen", |ui| {
-                    if alat_button(ui, "+", "Baru", "Dokumen kosong").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::FilePlus),
+                        "Baru",
+                        "Dokumen kosong",
+                    )
+                    .clicked()
+                    {
                         self.konfirm_baru = true;
                     }
-                    if alat_button(ui, "O", "Buka", "Buka DOCX/ODT/Markdown (segera hadir)")
-                        .clicked()
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::FolderOpen),
+                        "Buka",
+                        "Buka DOCX/ODT/Markdown (segera hadir)",
+                    )
+                    .clicked()
                     {
                         self.info(BannerKind::Info, "Buka berkas: segera hadir di P1 IO.");
                     }
-                    if alat_button(ui, "S", "Simpan", "Simpan dokumen").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::DeviceFloppy),
+                        "Simpan",
+                        "Simpan dokumen",
+                    )
+                    .clicked()
+                    {
                         self.info(
                             BannerKind::Sukses,
                             format!(
@@ -111,10 +140,24 @@ impl MerdekaPage for AksaraPage {
                 });
                 ui.separator();
                 grup(ui, "Ekspor", |ui| {
-                    if alat_button(ui, "P", "PDF", "Ekspor PDF (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::FileTypePdf),
+                        "PDF",
+                        "Ekspor PDF (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Ekspor PDF: segera hadir di P1 IO.");
                     }
-                    if alat_button(ui, "E", "EPUB", "Ekspor EPUB (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Book),
+                        "EPUB",
+                        "Ekspor EPUB (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Ekspor EPUB: segera hadir di P4.");
                     }
                 });
@@ -143,15 +186,31 @@ impl MerdekaPage for AksaraPage {
                         RataTeks::Rata,
                     ] {
                         let mut aktif = self.rata == r;
-                        if components::toggle_chip(ui, &mut aktif, r.label()).clicked() && aktif {
+                        tool_toggle(
+                            ui,
+                            &mut aktif,
+                            Icon::Outline(r.ikon()),
+                            r.label(),
+                            "Perataan paragraf",
+                        );
+                        if aktif {
                             self.rata = r;
                         }
                     }
-                    if alat_button(ui, "-", "Poin", "Daftar poin").clicked() {
+                    if tool_button(ui, Icon::Outline(Outline::List), "Poin", "Daftar poin")
+                        .clicked()
+                    {
                         self.teks.push_str("\n- ");
                         self.hitung();
                     }
-                    if alat_button(ui, "1.", "Nomor", "Daftar bernomor").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::ListNumbers),
+                        "Nomor",
+                        "Daftar bernomor",
+                    )
+                    .clicked()
+                    {
                         self.teks.push_str("\n1. ");
                         self.hitung();
                     }
@@ -168,26 +227,58 @@ impl MerdekaPage for AksaraPage {
             }
             Pita::Sisip => {
                 grup(ui, "Tabel & Media", |ui| {
-                    if alat_button(ui, "T", "Tabel", "Sisip tabel").clicked() {
+                    if tool_button(ui, Icon::Outline(Outline::Table), "Tabel", "Sisip tabel")
+                        .clicked()
+                    {
                         self.tabel_dialog = true;
                     }
-                    if alat_button(ui, "G", "Gambar", "Sisip gambar (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Photo),
+                        "Gambar",
+                        "Sisip gambar (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Sisip gambar: segera hadir di P1.");
                     }
-                    if alat_button(ui, "H", "Header", "Header (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Heading),
+                        "Header",
+                        "Header (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Header/footer: segera hadir di P1.");
                     }
-                    if alat_button(ui, "#", "Nomor", "Nomor halaman (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Hash),
+                        "Nomor",
+                        "Nomor halaman (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Nomor halaman: segera hadir di P1.");
                     }
                 });
                 ui.separator();
                 grup(ui, "Tautan", |ui| {
-                    if alat_button(ui, "@", "Link", "Sisip hyperlink").clicked() {
+                    if tool_button(ui, Icon::Outline(Outline::Link), "Link", "Sisip hyperlink")
+                        .clicked()
+                    {
                         self.teks.push_str(" [teks](https://...)");
                         self.hitung();
                     }
-                    if alat_button(ui, "B", "Bookmark", "Bookmark (segera hadir)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Bookmark),
+                        "Bookmark",
+                        "Bookmark (segera hadir)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Bookmark: segera hadir di P2.");
                     }
                 });
@@ -216,14 +307,34 @@ impl MerdekaPage for AksaraPage {
             }
             Pita::Referensi => {
                 grup(ui, "Daftar & Catatan", |ui| {
-                    if alat_button(ui, "=", "Daftar Isi", "Daftar isi otomatis (P2)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::List),
+                        "Daftar Isi",
+                        "Daftar isi otomatis (P2)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Daftar isi otomatis: segera hadir di P2.");
                     }
-                    if alat_button(ui, "1", "Catatan", "Sisip catatan kaki").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Note),
+                        "Catatan",
+                        "Sisip catatan kaki",
+                    )
+                    .clicked()
+                    {
                         self.teks.push_str("[^1]");
                         self.hitung();
                     }
-                    if alat_button(ui, "K", "Keterangan", "Keterangan gambar/tabel (P2)").clicked()
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Tag),
+                        "Keterangan",
+                        "Keterangan gambar/tabel (P2)",
+                    )
+                    .clicked()
                     {
                         self.info(
                             BannerKind::Info,
@@ -234,7 +345,14 @@ impl MerdekaPage for AksaraPage {
             }
             Pita::Tinjau => {
                 grup(ui, "Review", |ui| {
-                    if alat_button(ui, "C", "Komentar", "Tambah komentar").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Message),
+                        "Komentar",
+                        "Tambah komentar",
+                    )
+                    .clicked()
+                    {
                         self.komentar += 1;
                         self.info(
                             BannerKind::Sukses,
@@ -242,7 +360,14 @@ impl MerdekaPage for AksaraPage {
                         );
                     }
                     components::checkbox_row(ui, &mut self.lacak, "Lacak perubahan");
-                    if alat_button(ui, "ABC", "Ejaan", "Periksa ejaan (P3)").clicked() {
+                    if tool_button(
+                        ui,
+                        Icon::Outline(Outline::Abc),
+                        "Ejaan",
+                        "Periksa ejaan (P3)",
+                    )
+                    .clicked()
+                    {
                         self.info(BannerKind::Info, "Ejaan hunspell: segera hadir di P3.");
                     }
                 });

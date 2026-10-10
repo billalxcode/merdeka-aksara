@@ -28,6 +28,10 @@ pub fn page_paper(ui: &mut Ui, isi: impl FnOnce(&mut Ui)) {
 /// Penggaris tipis di atas kertas (stub visual, belum interaktif).
 pub fn ruler_stub(ui: &mut Ui) {
     ui.horizontal(|ui| {
-        ui.label(RichText::new("0  1  2  3  4  5  6  7  8  9  10 cm").small().color(TEKS_REDAH));
+        ui.label(
+            RichText::new("0  1  2  3  4  5  6  7  8  9  10 cm")
+                .small()
+                .color(TEKS_REDAH),
+        );
     });
 }

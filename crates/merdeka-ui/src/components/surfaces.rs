@@ -21,13 +21,7 @@ pub fn section(ui: &mut Ui, judul: &str, deskripsi: &str, isi: impl FnOnce(&mut 
 }
 
 /// Tampilan kosong + tombol aksi. Mengembalikan `true` bila aksi diklik.
-pub fn empty_state(
-    ui: &mut Ui,
-    ikon: &str,
-    judul: &str,
-    subjudul: &str,
-    aksi: &str,
-) -> bool {
+pub fn empty_state(ui: &mut Ui, ikon: &str, judul: &str, subjudul: &str, aksi: &str) -> bool {
     let mut klik = false;
     ui.vertical_centered(|ui| {
         ui.add_space(24.0);

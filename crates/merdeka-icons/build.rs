@@ -94,7 +94,12 @@ fn tulis_enum(out: &mut String, enum_nama: &str, gaya: &str, ikon: &[(String, St
     writeln!(out, "}}").unwrap();
 
     writeln!(out, "impl {enum_nama} {{").unwrap();
-    writeln!(out, "    pub const COUNT: usize = {}; // jumlah ikon", ikon.len()).unwrap();
+    writeln!(
+        out,
+        "    pub const COUNT: usize = {}; // jumlah ikon",
+        ikon.len()
+    )
+    .unwrap();
 
     writeln!(out, "    pub fn all() -> impl Iterator<Item = Self> {{").unwrap();
     writeln!(out, "        [").unwrap();
@@ -121,8 +126,16 @@ fn tulis_enum(out: &mut String, enum_nama: &str, gaya: &str, ikon: &[(String, St
     writeln!(out, "        }}").unwrap();
     writeln!(out, "    }}").unwrap();
 
-    writeln!(out, "    pub fn image(&self, ukuran: f32) -> egui::Image<'static> {{").unwrap();
-    writeln!(out, "        crate::image_for(\"{gaya}\", self.name(), ukuran)").unwrap();
+    writeln!(
+        out,
+        "    pub fn image(&self, ukuran: f32) -> egui::Image<'static> {{"
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "        crate::image_for(\"{gaya}\", self.name(), ukuran)"
+    )
+    .unwrap();
     writeln!(out, "    }}").unwrap();
     writeln!(out, "}}").unwrap();
 }
@@ -146,18 +159,26 @@ fn tulis_icon(out: &mut String) {
     writeln!(out, "        }}").unwrap();
     writeln!(out, "    }}").unwrap();
 
+    writeln!(out, "    pub fn from_name(nama: &str) -> Option<Self> {{").unwrap();
     writeln!(
         out,
-        "    pub fn from_name(nama: &str) -> Option<Self> {{"
+        "        if let Some(sisa) = nama.strip_prefix(\"filled/\") {{"
     )
     .unwrap();
-    writeln!(out, "        if let Some(sisa) = nama.strip_prefix(\"filled/\") {{").unwrap();
-    writeln!(out, "            return Filled::from_name(sisa).map(Self::Filled);").unwrap();
+    writeln!(
+        out,
+        "            return Filled::from_name(sisa).map(Self::Filled);"
+    )
+    .unwrap();
     writeln!(out, "        }}").unwrap();
     writeln!(out, "        Outline::from_name(nama).map(Self::Outline)").unwrap();
     writeln!(out, "    }}").unwrap();
 
-    writeln!(out, "    pub fn image(&self, ukuran: f32) -> egui::Image<'static> {{").unwrap();
+    writeln!(
+        out,
+        "    pub fn image(&self, ukuran: f32) -> egui::Image<'static> {{"
+    )
+    .unwrap();
     writeln!(out, "        match self {{").unwrap();
     writeln!(out, "            Self::Outline(o) => o.image(ukuran),").unwrap();
     writeln!(out, "            Self::Filled(f) => f.image(ukuran),").unwrap();

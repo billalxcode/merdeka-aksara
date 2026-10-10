@@ -37,7 +37,9 @@ pub struct MerdekaTheme {
 
 impl Default for MerdekaTheme {
     fn default() -> Self {
-        Self { lebar_dokumen: 720.0 }
+        Self {
+            lebar_dokumen: 720.0,
+        }
     }
 }
 

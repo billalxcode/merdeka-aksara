@@ -18,6 +18,10 @@ pub fn status_bar(ui: &mut Ui, kiri: &str, kanan: &str) {
 pub fn zoom_slider(ui: &mut Ui, zoom: &mut f32) {
     ui.horizontal(|ui| {
         ui.label("Zoom");
-        ui.add(egui::Slider::new(zoom, 0.5..=2.0).suffix("x").show_value(true));
+        ui.add(
+            egui::Slider::new(zoom, 0.5..=2.0)
+                .suffix("x")
+                .show_value(true),
+        );
     });
 }

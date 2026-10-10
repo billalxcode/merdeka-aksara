@@ -1817,6 +1817,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "merdeka-matriks"
+version = "0.1.0"
+dependencies = [
+ "eframe",
+ "egui",
+ "merdeka-ui",
+]
+
+[[package]]
+name = "merdeka-naskah"
+version = "0.1.0"
+dependencies = [
+ "eframe",
+ "egui",
+ "merdeka-ui",
+]
+
+[[package]]
+name = "merdeka-pusat"
+version = "0.1.0"
+dependencies = [
+ "eframe",
+ "egui",
+ "merdeka-ui",
+]
+
+[[package]]
 name = "merdeka-ui"
 version = "0.1.0"
 dependencies = [
