@@ -8,3 +8,4 @@ license = "MIT"
 [dependencies]
 egui = "0.36"
 eframe = { version = "0.36", default-features = true }
+egui_extras = { version = "0.36", features = ["file", "image", "svg"] }
