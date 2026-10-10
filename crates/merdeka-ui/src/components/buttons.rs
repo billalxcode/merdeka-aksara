@@ -1,12 +1,13 @@
 //! Tombol - konsisten di semua aplikasi.
 
-use crate::theme::{MERAH, TEKS_REDAH};
+use crate::theme::TEKS_REDAH;
 use egui::{Response, RichText, Ui};
 use merdeka_icons::{Icon, icon};
 
-/// Tombol primer merah. Untuk aksi utama tiap grup/dialog.
+/// Tombol primer. Warna ikut primer tema aktif (seleksi).
 pub fn primary_button(ui: &mut Ui, label: &str) -> Response {
-    ui.add(egui::Button::new(RichText::new(label).color(egui::Color32::WHITE).strong()).fill(MERAH))
+    let isi = ui.visuals().selection.bg_fill;
+    ui.add(egui::Button::new(RichText::new(label).color(egui::Color32::WHITE).strong()).fill(isi))
 }
 
 /// Tombol sekunder bingkai. Untuk aksi biasa.

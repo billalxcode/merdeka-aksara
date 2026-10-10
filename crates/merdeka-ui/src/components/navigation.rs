@@ -1,14 +1,14 @@
 //! Navigasi - bar judul + seksi sidebar.
 
 use crate::icons::{Icon, Outline};
-use crate::theme::MERAH;
 use egui::{RichText, Ui};
 
-/// Bar judul: logo merah + nama + versi + kolom cari.
+/// Bar judul: logo + nama + versi + kolom cari. Logo ikut primer tema aktif.
 pub fn title_bar(ui: &mut Ui, nama_app: &str, versi: &str, cari: &mut String) {
     ui.horizontal(|ui| {
+        let aksen = ui.visuals().selection.bg_fill;
         let logo = egui::Button::new(RichText::new("M").color(egui::Color32::WHITE).strong())
-            .fill(MERAH)
+            .fill(aksen)
             .frame(true);
         ui.add_sized([28.0, 28.0], logo)
             .on_hover_text("Merdeka - bebas pakai, bebas salin, bebas edit");

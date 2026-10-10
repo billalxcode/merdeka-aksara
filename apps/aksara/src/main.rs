@@ -11,10 +11,11 @@ mod domain;
 mod infrastructure;
 mod presentation;
 
-use merdeka_ui::{MerdekaConfig, run_page};
+use merdeka_ui::{MerdekaConfig, MerdekaTheme, run_page};
 use presentation::page::AksaraPage;
 
 fn main() -> eframe::Result {
-    let config = MerdekaConfig::new("Merdeka Aksara", env!("CARGO_PKG_VERSION"));
+    let mut config = MerdekaConfig::new("Merdeka Aksara", env!("CARGO_PKG_VERSION"));
+    config.tema = MerdekaTheme::aksara();
     run_page(config, |_cc| AksaraPage::baru())
 }

@@ -10,12 +10,13 @@
 use crate::components::{self, Pita};
 use crate::theme::MerdekaTheme;
 
-/// Konfigurasi tiap aplikasi Merdeka.
+/// Konfigurasi tiap aplikasi Merdeka (termasuk pilihan tema).
 #[derive(Debug, Clone)]
 pub struct MerdekaConfig {
     pub app_name: String,
     pub version: String,
     pub initial_size: [f32; 2],
+    pub tema: MerdekaTheme,
 }
 
 impl Default for MerdekaConfig {
@@ -24,6 +25,7 @@ impl Default for MerdekaConfig {
             app_name: "Merdeka".to_owned(),
             version: env!("CARGO_PKG_VERSION").to_owned(),
             initial_size: [1100.0, 700.0],
+            tema: MerdekaTheme::default(),
         }
     }
 }
@@ -34,6 +36,7 @@ impl MerdekaConfig {
             app_name: app_name.into(),
             version: version.into(),
             initial_size: [1100.0, 700.0],
+            tema: MerdekaTheme::default(),
         }
     }
 }
@@ -66,9 +69,10 @@ pub struct MerdekaApp<P: MerdekaPage> {
 
 impl<P: MerdekaPage> MerdekaApp<P> {
     pub fn new(config: MerdekaConfig, page: P) -> Self {
+        let tema = config.tema;
         Self {
             config,
-            theme: MerdekaTheme::default(),
+            theme: tema,
             tab: Pita::Beranda,
             cari: String::new(),
             page,
