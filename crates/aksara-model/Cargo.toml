@@ -1,0 +1,6 @@
+[package]
+name = "aksara-model"
+version = "0.1.0"
+edition = "2024"
+description = "Block-based document model for Merdeka Aksara - pure std, no UI"
+license = "MIT"
